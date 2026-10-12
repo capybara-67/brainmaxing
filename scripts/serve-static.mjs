@@ -10,6 +10,7 @@ const types = {
   '.js': 'text/javascript;charset=utf-8',
   '.css': 'text/css;charset=utf-8',
   '.svg': 'image/svg+xml',
+  '.woff2': 'font/woff2',
   '.json': 'application/json;charset=utf-8',
   '.txt': 'text/plain;charset=utf-8',
 };
@@ -38,7 +39,7 @@ createServer(async (req, res) => {
     res.writeHead(200, {
       'content-length': info.size,
       'content-type': types[extname(file)] || 'application/octet-stream',
-      'cache-control': file.endsWith('index.html') ? 'no-cache' : 'public, max-age=31536000, immutable',
+      'cache-control': /\/assets\//.test(file) ? 'public, max-age=31536000, immutable' : 'no-cache',
       'x-content-type-options': 'nosniff',
     });
     if (req.method === 'HEAD') res.end();

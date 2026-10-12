@@ -1,4 +1,3 @@
-'use client';
 /* eslint-disable jsx-a11y/prefer-tag-over-role, react/react-compiler -- Inline SVG diagrams need an accessible image role, and lesson selection follows parent navigation. */
 import { useEffect, useState } from 'react';
 import {

@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { shuffle } from '@/lib/games';
 import { ArrowRight } from 'lucide-react';

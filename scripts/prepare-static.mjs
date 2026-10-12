@@ -1,32 +1,19 @@
-import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
+import { assetFingerprint, offlineWorker } from './offline.mjs';
 
-const root = process.cwd();
-const out = join(root, 'dist', 'client');
-const files = [];
-
+const out = join(process.cwd(), 'dist', 'client');
+const entries = [];
 async function walk(dir) {
-  for (const entry of await readdir(dir)) {
-    const path = join(dir, entry);
-    const info = await stat(path);
-    if (info.isDirectory()) await walk(path);
-    else files.push(`/${relative(out, path).split('/').join('/')}`);
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) await walk(path);
+    else if (entry.isFile() && entry.name !== 'sw.js') {
+      const url = `/${relative(out, path).split('\\').join('/')}`;
+      entries.push([url, await readFile(path)]);
+    }
   }
 }
-
 await walk(out);
-
-const hash = files.sort().join('|').length.toString(36);
-const urls = JSON.stringify(['/', ...files.filter((file) => file !== '/sw.js')]);
-const sw = `const CACHE='brainmaxing-${hash}';\nconst ASSETS=${urls};\nself.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))});\nself.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('brainmaxing-')&&key!==CACHE).map(key=>caches.delete(key)))) .then(()=>self.clients.claim()))});\nself.addEventListener('fetch',event=>{const request=event.request;if(request.method!=='GET'||new URL(request.url).origin!==self.location.origin)return;if(request.mode==='navigate'){event.respondWith(fetch(request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('/',copy));return response}).catch(()=>caches.match('/')));return;}event.respondWith(caches.match(request).then(cached=>cached||fetch(request).then(response=>{const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(request,copy));return response})))})\n`;
-
-await writeFile(join(out, 'sw.js'), sw);
-
-const htmlPath = join(out, 'index.html');
-const html = await readFile(htmlPath, 'utf8');
-if (!html.includes('/sw.js')) {
-  await writeFile(
-    htmlPath,
-    html.replace('</body>', `<script>if('serviceWorker'in navigator){addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}</script></body>`),
-  );
-}
+const paths = entries.map(([path]) => path).filter(path => path !== '/index.html');
+await writeFile(join(out, 'sw.js'), offlineWorker(assetFingerprint(entries), ['/', ...paths.sort()]));

@@ -1,4 +1,3 @@
-'use client';
 /* eslint-disable react/react-compiler -- localStorage hydration must happen after the browser mounts. */
 import { useEffect, useRef, useState } from 'react';
 import { Download, Upload, Check, Copy } from 'lucide-react';

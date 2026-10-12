@@ -1,4 +1,3 @@
-'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -553,7 +552,8 @@ export default function Home() {
             <p>
               Notes and game history are stored in this browser. The app has no
               login, analytics, or live search. Source links leave the app and
-              need internet. Export codes contain your notes and results without
+              need internet. After one online visit, this browser can cache the app for
+              offline play. Export codes contain your notes and results without
               encryption. Clear browser storage to remove your local save.
               Static hosting providers may retain normal access logs.
             </p>

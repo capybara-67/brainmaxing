@@ -53,6 +53,8 @@ body {
 
 :root,
 .dark {
+  --font-geist-sans: 'Geist Variable';
+  --font-geist-mono: 'Geist Mono Variable';
   --background: #101212;
   --foreground: #f0f2ed;
   --card: #191c1c;

@@ -38,12 +38,14 @@ The game library supports category filters, a game selector, and random selectio
 
 Results and notes use local browser storage. Export a save code or download a backup to move them to another device. Imports validate the format, merge sessions by ID, and preserve conflicting notes as separate copies. Save codes are not encrypted. Corrupt existing storage is preserved while new work stays in memory.
 
-The app needs no account or API key. Games and bundled explainers work after the page loads; external source links need internet. It does not have a service-worker offline cache or cross-device sync.
+The app needs no account or API key. Games and bundled explainers work after the page loads; external source links need internet. After one online visit, a service worker caches the app, fonts, and bundled explainers for offline use. Saves stay on the device; there is no cross-device sync.
 
 ## Checks and limits
 
-The 25 automated tests cover trial generation at all difficulties, answer consistency, balanced scoring, export/import, and malformed saves. TypeScript and production builds pass. Browser checks cover complete game sessions and reload persistence.
+The 30 automated tests cover trial generation at all difficulties, answer consistency, balanced scoring, export/import, malformed saves, and offline-cache updates. TypeScript and production builds pass. Browser checks cover complete game sessions and reload persistence.
 
-The dependency tree was reduced to the controls and packages used by this app. Six inherited high-severity audit findings remain in the framework's glob-pattern tooling; the audit suggests a framework downgrade that would break this setup. Review that dependency before handling untrusted build input.
+This is a React app built with Vite. It runs entirely in the browser, so it does not need server rendering or a server framework. Fonts are bundled locally. The current lockfile passes `npm audit` with zero findings.
+
+Offline cache versions use hashes of file contents, so equally sized updates still invalidate old files. Failed responses and unrelated requests cannot replace the cached home page.
 
 Some tasks link to the research that inspired them. The games are recreational and educational; scores describe these sessions and do not measure intelligence or establish health benefits.

@@ -1,5 +1,3 @@
-'use client';
-/* eslint-disable react/react-compiler, react-hooks/exhaustive-deps, jsx-a11y/prefer-tag-over-role -- Timed game rounds rely on refs to avoid stale response windows. */
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,

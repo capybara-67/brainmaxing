@@ -1,4 +1,3 @@
-'use client';
 /* eslint-disable react/react-compiler -- Incoming explore questions intentionally seed the editor after navigation. */
 import { useEffect, useState } from 'react';
 import { BookOpen, Download, Plus, Trash2 } from 'lucide-react';
