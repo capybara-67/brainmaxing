@@ -49,3 +49,7 @@ This is a React app built with Vite. It runs entirely in the browser, so it does
 Offline cache versions use hashes of file contents, so equally sized updates still invalidate old files. Failed responses and unrelated requests cannot replace the cached home page.
 
 Some tasks link to the research that inspired them. The games are recreational and educational; scores describe these sessions and do not measure intelligence or establish health benefits.
+
+## Fonts
+
+Geist and Geist Mono are by the [Geist Project Authors](https://github.com/vercel/geist-font), distributed under the SIL Open Font License. The font notices are included in `public/licenses/` and in the static build.
