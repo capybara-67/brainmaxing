@@ -1,13 +1,10 @@
-
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   ArrowRight,
   Brain,
-  Compass,
-  FlaskConical,
-  Zap,
-  Sparkles,
+  Dice5,
+  Clock3,
   Check,
   Target,
 } from 'lucide-react';
@@ -16,6 +13,7 @@ import { Focus, Logic } from './exercises';
 import Explore from './explore';
 import Research from './research';
 import GameSession from './new-games';
+import { GameArt, CuriosityArt } from './game-art';
 import { games, shuffle, type GameId } from '@/lib/games';
 import { useSave, SaveDialog } from './progress';
 import {
@@ -70,7 +68,7 @@ function Memory({ onComplete }: { onComplete: (score: number) => void }) {
     }
   }
   const status = {
-    ready: 'A little challenge. A clearer moment.',
+    ready: 'Ready when you are.',
     watch: `Memorize tiles ${pattern.map((n) => n + 1).join(', ')}. Hide the pattern when ready.`,
     play: `Find the ${pattern.length} tiles you just saw.`,
     win: 'Nice. Loading the next pattern…',
@@ -270,19 +268,19 @@ export default function Home() {
           <span className="brand-icon">
             <Brain size={23} />
           </span>
-          brainmaxing
+          brainmaxing<span className="brand-period">.</span>
         </button>
         <TabsList className="main-nav" aria-label="Main sections">
           <TabsTrigger value="train">
-            <Zap />
+            <span className="nav-number">01</span>
             Train
           </TabsTrigger>
           <TabsTrigger value="explore">
-            <Compass />
+            <span className="nav-number">02</span>
             Explore
           </TabsTrigger>
           <TabsTrigger value="research">
-            <FlaskConical />
+            <span className="nav-number">03</span>
             Notebook
           </TabsTrigger>
         </TabsList>
@@ -295,18 +293,26 @@ export default function Home() {
       <main id="main">
         <div className="intro">
           <div>
-            <div className="eyebrow">THE CURIOSITY GYM</div>
+            <div className="eyebrow intro-eyebrow">
+              <span className="live-dot" /> A PLACE TO PLAY & WONDER
+            </div>
             <h1>
-              Unscroll. <span>Switch on.</span>
+              Put your mind <span>in play.</span>
             </h1>
-            <p>Small challenges. Big rabbit holes. A little space to think.</p>
+            <p>
+              A few minutes. A fresh challenge. See where your curiosity takes
+              you.
+            </p>
           </div>
           <div className="session">
             <span className="session-icon">
-              <Sparkles size={22} />
+              <Clock3 size={21} />
             </span>
             <div>
-              <b>{completed} completed today</b>
+              <span className="eyebrow">TODAY, AT YOUR PACE</span>
+              <b>
+                {completed} {completed === 1 ? 'session' : 'sessions'} completed
+              </b>
               <span>
                 {save.data.sessions.length} sessions saved on this device
               </span>
@@ -321,7 +327,7 @@ export default function Home() {
         <TabsContent value="train" keepMounted>
           <div className="section-title" id="exercise-top">
             <h2 tabIndex={-1} data-main-heading="train">
-              Your mental warm-up
+              <span className="section-index">01</span> The warm-up
             </h2>
             <Select
               value={game}
@@ -379,25 +385,24 @@ export default function Home() {
             </section>
             <aside className="side-stack">
               <div className="note-card">
-                <span className="eyebrow">A MOMENT, RECLAIMED</span>
+                <span className="eyebrow">A NOTE TO SELF</span>
+                <div className="practice-art" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
                 <h3>
-                  Start gently.
+                  A little practice.
                   <br />
-                  Find your rhythm.
+                  A change of pace.
                 </h3>
                 <p>
-                  One short session is enough. Choose a harder mode when you
-                  feel like a challenge.
+                  Take your time. Try something unfamiliar. There&apos;s no
+                  streak to keep and no finish line.
                 </p>
-                <div className="daily-count">
-                  <strong>{completed}</strong>
-                  <span>
-                    sessions today
-                    <br />
-                    no streak to protect
-                  </span>
-                </div>
-                <span className="micro">YOUR PACE. YOUR PRACTICE.</span>
+                <span className="micro">
+                  COME BACK WHEN YOU FEEL LIKE IT. ↗
+                </span>
               </div>
               <div className="small-note">
                 <Target size={21} />
@@ -432,11 +437,16 @@ export default function Home() {
           </div>
           <div className="section-title below challenge-title">
             <div>
-              <h2>Find your kind of challenge</h2>
-              <span>{allGames.length} GAMES · AT YOUR OWN PACE</span>
+              <h2>
+                <span className="section-index">02</span> Pick your next
+                challenge
+              </h2>
+              <span>
+                {allGames.length} ways to give your brain something to do.
+              </span>
             </div>
             <button className="secondary surprise-button" onClick={surprise}>
-              <Sparkles size={16} />
+              <Dice5 size={17} />
               Pick for me
             </button>
           </div>
@@ -446,6 +456,11 @@ export default function Home() {
                 (c) => (
                   <TabsTrigger key={c} value={c}>
                     {c}
+                    <span className="category-count">
+                      {c === 'All'
+                        ? allGames.length
+                        : allGames.filter((g) => g.category === c).length}
+                    </span>
                   </TabsTrigger>
                 ),
               )}
@@ -457,26 +472,41 @@ export default function Home() {
               .map((g) => (
                 <button
                   className={`game-card ${game === g.id ? 'selected' : ''}`}
+                  data-category={g.category.toLowerCase()}
                   key={g.id}
                   onClick={() => pick(g.id)}
                   aria-pressed={game === g.id}
                 >
-                  <span className="game-card-top">
-                    <span>{g.category}</span>
-                    {games.some((x) => x.id === g.id) && (
-                      <span className="new-badge">New</span>
-                    )}
+                  <span className="game-card-visual">
+                    <span className="game-card-top">
+                      <span>{g.category}</span>
+                      <span className="game-card-index">
+                        {String(
+                          allGames.findIndex((x) => x.id === g.id) + 1,
+                        ).padStart(2, '0')}
+                      </span>
+                    </span>
+                    <GameArt
+                      id={g.id}
+                      category={g.category}
+                      index={allGames.findIndex((x) => x.id === g.id)}
+                    />
                   </span>
-                  <span className="game-card-index">
-                    {String(
-                      allGames.findIndex((x) => x.id === g.id) + 1,
-                    ).padStart(2, '0')}
-                  </span>
-                  <h3>{g.name}</h3>
-                  <p>{g.description}</p>
-                  <span className="card-bottom">
-                    {g.tag}
-                    <ArrowUpRight size={17} />
+                  <span className="game-card-copy">
+                    <h3>
+                      {g.name}
+                      <ArrowUpRight size={18} />
+                    </h3>
+                    <p>{g.description}</p>
+                    <span className="card-bottom">
+                      {game === g.id ? (
+                        <>
+                          <span className="selected-dot" /> SELECTED TO PLAY
+                        </>
+                      ) : (
+                        g.tag
+                      )}
+                    </span>
                   </span>
                 </button>
               ))}
@@ -487,7 +517,9 @@ export default function Home() {
             games. Scores describe your play in this app.
           </p>
           <div className="section-title below">
-            <h2>Follow a little curiosity</h2>
+            <h2>
+              <span className="section-index">03</span> Down the rabbit hole
+            </h2>
             <button className="text-button" onClick={() => go('explore')}>
               Explore the lab
               <ArrowUpRight size={17} />
@@ -501,13 +533,18 @@ export default function Home() {
             ].map(([id, title, q]) => (
               <button
                 className="teaser"
+                data-topic={id}
                 key={id}
                 onClick={() => {
                   setLesson(id);
                   go('explore');
                 }}
               >
-                <span className="teaser-num">OFFLINE DEEP DIVE</span>
+                <CuriosityArt topic={id} />
+                <span className="teaser-num">
+                  THE FIELD GUIDE /{' '}
+                  {id === 'engine' ? '01' : id === 'internet' ? '02' : '03'}
+                </span>
                 <h3>
                   {title}
                   <ArrowUpRight />
@@ -546,16 +583,18 @@ export default function Home() {
             <Brain size={18} />
             brainmaxing
           </span>
-          <span>{allGames.length} games. Zero accounts. Yours to explore.</span>
+          <span>
+            Made for curious minds. {allGames.length} games, no account needed.
+          </span>
           <details className="privacy">
             <summary>Privacy & offline use</summary>
             <p>
               Notes and game history are stored in this browser. The app has no
               login, analytics, or live search. Source links leave the app and
-              need internet. After one online visit, this browser can cache the app for
-              offline play. Export codes contain your notes and results without
-              encryption. Clear browser storage to remove your local save.
-              Static hosting providers may retain normal access logs.
+              need internet. After one online visit, this browser can cache the
+              app for offline play. Export codes contain your notes and results
+              without encryption. Clear browser storage to remove your local
+              save. Static hosting providers may retain normal access logs.
             </p>
           </details>
         </footer>

@@ -140,7 +140,7 @@ function Diagram({ id, step }: { id: string; step: number }) {
             <path
               d="M20 0H0V20"
               fill="none"
-              stroke="#283a2d"
+              stroke="#d4ddda"
               strokeWidth=".6"
             />
           </pattern>
@@ -149,7 +149,7 @@ function Diagram({ id, step }: { id: string; step: number }) {
         <path
           d="M112 44V200M248 44V200M112 44H248"
           fill="none"
-          stroke="#90a986"
+          stroke="#75897f"
           strokeWidth="5"
         />
         <rect
@@ -157,12 +157,12 @@ function Diagram({ id, step }: { id: string; step: number }) {
           y="48"
           width="128"
           height={y - 48}
-          fill={step === 2 ? '#d4a85a' : '#436038'}
+          fill={step === 2 ? '#c49352' : '#739785'}
           opacity=".4"
         />
         <path
           d={`M180 ${y + 15} L${step % 2 === 0 ? 210 : 154} 233`}
-          stroke="#83967c"
+          stroke="#647e72"
           strokeWidth="13"
         />
         <circle
@@ -170,29 +170,29 @@ function Diagram({ id, step }: { id: string; step: number }) {
           cy="246"
           r="35"
           fill="none"
-          stroke="#5e7255"
+          stroke="#7b8f83"
           strokeWidth="7"
         />
         <path
           d={`M180 246L${step % 2 === 0 ? 210 : 154} 233`}
-          stroke="#c3f76a"
+          stroke="#294cba"
           strokeWidth="10"
         />
-        <rect x="116" y={y} width="128" height="24" rx="3" fill="#abc59a" />
+        <rect x="116" y={y} width="128" height="24" rx="3" fill="#a5b4cf" />
         <path
           d={`M133 29V${step === 0 ? 68 : 43}M225 29V${step === 3 ? 68 : 43}`}
-          stroke={step === 0 || step === 3 ? '#c3f76a' : '#809575'}
+          stroke={step === 0 || step === 3 ? '#294cba' : '#7d8e87'}
           strokeWidth="8"
         />
-        <path d="M180 31V54" stroke="#c3f76a" strokeWidth="5" />
-        <text x="16" y="114" fill="#a3b397" fontSize="12">
+        <path d="M180 31V54" stroke="#294cba" strokeWidth="5" />
+        <text x="16" y="114" fill="#64766a" fontSize="12">
           CYLINDER
         </text>
-        <path d="M83 110H108" stroke="#6e8265" />
-        <text x="258" y={y + 17} fill="#c3f76a" fontSize="12">
+        <path d="M83 110H108" stroke="#879b8d" />
+        <text x="258" y={y + 17} fill="#294cba" fontSize="12">
           PISTON
         </text>
-        <text x="234" y="269" fill="#a3b397" fontSize="12">
+        <text x="234" y="269" fill="#64766a" fontSize="12">
           CRANKSHAFT
         </text>
       </svg>
@@ -230,7 +230,7 @@ function Diagram({ id, step }: { id: string; step: number }) {
         rx="145"
         ry="61"
         fill="none"
-        stroke="#a48cdf"
+        stroke="#9a89bb"
         strokeWidth="18"
         opacity=".5"
       />
@@ -238,8 +238,8 @@ function Diagram({ id, step }: { id: string; step: number }) {
         cx="180"
         cy="150"
         r="69"
-        fill="#101212"
-        stroke="#c3f76a"
+        fill="#26354b"
+        stroke="#294cba"
         strokeWidth="3"
       />
       <circle
@@ -247,14 +247,14 @@ function Diagram({ id, step }: { id: string; step: number }) {
         cy="150"
         r="86"
         fill="none"
-        stroke="#71895a"
+        stroke="#889ea0"
         strokeDasharray="3 6"
       />
-      <path d="M182 219V257H274M268 125L302 71" fill="none" stroke="#9daf90" />
-      <text x="186" y="275" fill="#c3f76a" fontSize="12">
+      <path d="M182 219V257H274M268 125L302 71" fill="none" stroke="#85979a" />
+      <text x="186" y="275" fill="#294cba" fontSize="12">
         EVENT HORIZON
       </text>
-      <text x="214" y="59" fill="#c3b1e9" fontSize="12">
+      <text x="214" y="59" fill="#74638f" fontSize="12">
         SURROUNDING MATTER
       </text>
     </svg>
