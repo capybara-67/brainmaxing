@@ -1,6 +1,6 @@
 # Brainmaxing
 
-A browser-based collection of short games and interactive explainers. It has 19 games across memory, attention, reasoning, and learning, plus a notebook that stays on the current device.
+A browser-based collection of short games and interactive explainers. It has 20 games across reset, memory, attention, reasoning, and learning, plus a notebook that stays on the current device.
 
 [Open Brainmaxing](https://brainmaxing-lab.yerboljantumar.chatgpt.site)
 
@@ -24,6 +24,8 @@ The production build produces static files in `dist/client`. `npm start` serves 
 
 ## Games
 
+Reset: Quiet Current. Rotate stream pieces to connect a spring to a pond in three small gardens. No timer, visible score, or move limit; optional nudges fix one piece and can be undone. Each garden waits for you to continue, and the final garden suggests stepping away from the screen. Completed breaks are saved locally and supported by save export/import. This is recreational play without claims about health benefits.
+
 Memory: Memory matrix, Signal stream, Path echo, Reverse relay, Order recall.
 
 Attention: Color focus, Arrow focus, Rule shift, Hold fire, Find the match.
@@ -42,7 +44,7 @@ The app needs no account or API key. Games and bundled explainers work after the
 
 ## Checks and limits
 
-The 30 automated tests cover trial generation at all difficulties, answer consistency, balanced scoring, export/import, malformed saves, and offline-cache updates. TypeScript and production builds pass. Browser checks cover complete game sessions and reload persistence.
+Automated tests cover trial generation at all difficulties, answer consistency, balanced scoring, stream connectivity and solvability, export/import, malformed saves, and offline-cache updates.
 
 This is a React app built with Vite. It runs entirely in the browser, so it does not need server rendering or a server framework. Fonts are bundled locally. The current lockfile passes `npm audit` with zero findings.
 

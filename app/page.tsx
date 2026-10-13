@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
@@ -16,6 +15,8 @@ import { Focus, Logic } from './exercises';
 import Explore from './explore';
 import Research from './research';
 import GameSession from './new-games';
+import QuietCurrent from './quiet-current';
+import { quietCurrent } from '@/lib/quiet-current';
 import { games, shuffle, type GameId } from '@/lib/games';
 import { useSave, SaveDialog } from './progress';
 import {
@@ -210,11 +211,11 @@ const originals = [
     description: 'Find the rule behind the numbers.',
   },
 ];
-const allGames = [...originals, ...games];
+const allGames = [quietCurrent, ...originals, ...games];
 export default function Home() {
   const [tab, setTab] = useState('train');
-  const [game, setGame] = useState('memory');
-  const [visited, setVisited] = useState(['memory']);
+  const [game, setGame] = useState('quiet-current');
+  const [visited, setVisited] = useState(['quiet-current']);
   const [filter, setFilter] = useState('All');
   const [lesson, setLesson] = useState('engine');
   const [question, setQuestion] = useState('');
@@ -321,7 +322,9 @@ export default function Home() {
         <TabsContent value="train" keepMounted>
           <div className="section-title" id="exercise-top">
             <h2 tabIndex={-1} data-main-heading="train">
-              Your mental warm-up
+              {game === 'quiet-current'
+                ? 'A little space to unwind'
+                : 'Your mental warm-up'}
             </h2>
             <Select
               value={game}
@@ -347,7 +350,13 @@ export default function Home() {
             <section className="exercise-panel" aria-label="Selected exercise">
               {visited.map((id) => (
                 <div key={id} hidden={id !== game}>
-                  {id === 'memory' ? (
+                  {id === 'quiet-current' ? (
+                    <QuietCurrent
+                      onComplete={() =>
+                        save.complete({ game: id, level: 1, score: 100 })
+                      }
+                    />
+                  ) : id === 'memory' ? (
                     <Memory
                       onComplete={(score) =>
                         save.complete({ game: id, level: 1, score })
@@ -386,8 +395,9 @@ export default function Home() {
                   Find your rhythm.
                 </h3>
                 <p>
-                  One short session is enough. Choose a harder mode when you
-                  feel like a challenge.
+                  {game === 'quiet-current'
+                    ? 'Follow one small stream. Use a nudge whenever you like. Three gardens make a complete break.'
+                    : 'One short session is enough. Choose a harder mode when you feel like a challenge.'}
                 </p>
                 <div className="daily-count">
                   <strong>{completed}</strong>
@@ -419,12 +429,18 @@ export default function Home() {
                     }
                   </b>
                   <span>
-                    {save.data.sessions[0].score}% ·{' '}
-                    {
-                      ['Gentle', 'Steady', 'Challenge'][
-                        save.data.sessions[0].level - 1
-                      ]
-                    }
+                    {save.data.sessions[0].game === 'quiet-current' ? (
+                      '3 gardens restored · Quiet break'
+                    ) : (
+                      <>
+                        {save.data.sessions[0].score}% ·{' '}
+                        {
+                          ['Gentle', 'Steady', 'Challenge'][
+                            save.data.sessions[0].level - 1
+                          ]
+                        }
+                      </>
+                    )}
                   </span>
                 </div>
               )}
@@ -442,13 +458,18 @@ export default function Home() {
           </div>
           <Tabs value={filter} onValueChange={(v) => setFilter(String(v))}>
             <TabsList className="category-tabs" aria-label="Filter games">
-              {['All', 'Memory', 'Attention', 'Reasoning', 'Learning'].map(
-                (c) => (
-                  <TabsTrigger key={c} value={c}>
-                    {c}
-                  </TabsTrigger>
-                ),
-              )}
+              {[
+                'All',
+                'Reset',
+                'Memory',
+                'Attention',
+                'Reasoning',
+                'Learning',
+              ].map((c) => (
+                <TabsTrigger key={c} value={c}>
+                  {c}
+                </TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
           <div className="game-library">
@@ -463,7 +484,8 @@ export default function Home() {
                 >
                   <span className="game-card-top">
                     <span>{g.category}</span>
-                    {games.some((x) => x.id === g.id) && (
+                    {(g.id === 'quiet-current' ||
+                      games.some((x) => x.id === g.id)) && (
                       <span className="new-badge">New</span>
                     )}
                   </span>
@@ -552,10 +574,10 @@ export default function Home() {
             <p>
               Notes and game history are stored in this browser. The app has no
               login, analytics, or live search. Source links leave the app and
-              need internet. After one online visit, this browser can cache the app for
-              offline play. Export codes contain your notes and results without
-              encryption. Clear browser storage to remove your local save.
-              Static hosting providers may retain normal access logs.
+              need internet. After one online visit, this browser can cache the
+              app for offline play. Export codes contain your notes and results
+              without encryption. Clear browser storage to remove your local
+              save. Static hosting providers may retain normal access logs.
             </p>
           </details>
         </footer>

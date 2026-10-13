@@ -705,5 +705,6 @@ export const allGameIds = [
   'memory',
   'focus',
   'logic',
+  'quiet-current',
   ...games.map((game) => game.id),
 ];

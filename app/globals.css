@@ -1904,6 +1904,362 @@ button {
   }
 }
 
+.quiet-current {
+  grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.25fr);
+  gap: 26px;
+  background: radial-gradient(ellipse at 90% 20%, #263c2a35, transparent 65%);
+}
+.quiet-copy {
+  align-self: center;
+}
+.quiet-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9d4b1;
+}
+.quiet-copy h2 {
+  font-size: clamp(28px, 3vw, 38px);
+}
+.quiet-instructions {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  margin: 24px 0;
+  color: #b9c6b3;
+  font-size: 13px;
+}
+.quiet-instructions li {
+  display: flex;
+  gap: 10px;
+}
+.quiet-instructions li > span {
+  color: #9fbd90;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  padding-top: 2px;
+}
+.quiet-progress {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 22px 0;
+}
+.quiet-progress > span {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #40533b;
+  border-radius: 50%;
+  color: #829a76;
+}
+.quiet-progress > .current {
+  color: #c8dfb7;
+  border-color: #90ab7b;
+}
+.quiet-progress > .restored {
+  color: #1d301d;
+  background: #b7d49b;
+  border-color: #b7d49b;
+}
+.quiet-progress small {
+  font-size: 11px;
+  color: #a7b99b;
+  margin-left: 5px;
+}
+.quiet-start {
+  background: #c3ddb0;
+  color: #1c2b17;
+}
+.quiet-start:hover {
+  background: #d3eac2;
+}
+.quiet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.quiet-actions .secondary {
+  font-size: 12px;
+  padding: 10px 12px;
+}
+.quiet-undo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #b5c6ab;
+  font-size: 12px;
+  padding: 8px;
+}
+.quiet-undo:disabled {
+  opacity: 0.4;
+}
+.quiet-copy .quiet-status {
+  display: block;
+  font-size: 12px;
+  color: #b7cbaa;
+  line-height: 1.65;
+  margin-top: 18px;
+  min-height: 60px;
+}
+.quiet-footnote {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+}
+.quiet-ending {
+  padding: 18px 0 0;
+  border-top: 1px solid #3a4c35;
+}
+.quiet-ending h3 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #dceace;
+}
+.quiet-ending p {
+  font-size: 13px;
+  margin: 10px 0 15px;
+}
+.quiet-ending .micro {
+  display: block;
+  font-size: 9px;
+  line-height: 1.8;
+  margin-top: 15px;
+}
+.quiet-garden {
+  align-self: center;
+  min-width: 0;
+  border: 1px solid #405743;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 50% 45%, #314b3560, transparent 75%), #17281f;
+  padding: 20px 12px;
+  transition:
+    border-color 0.6s,
+    background-color 0.6s;
+}
+.quiet-garden.garden-restored {
+  border-color: #a3c299;
+  background-color: #1c3023;
+}
+.quiet-garden-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 0 7px 20px;
+  font-size: 12px;
+  color: #c9dbbd;
+}
+.quiet-garden-title > :last-child {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  color: #9ab18e;
+  white-space: nowrap;
+}
+.quiet-landscape {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 4px;
+}
+.quiet-source,
+.quiet-pond {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #a6d6cd;
+  font-size: 9px;
+}
+.quiet-source > span,
+.quiet-pond > span:last-child {
+  position: absolute;
+  transform: translateY(34px);
+}
+.quiet-board {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 3px;
+}
+.quiet-piece {
+  display: block;
+  aspect-ratio: 1;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid #496249;
+  background: #273d2c;
+  border-radius: 7px;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s;
+}
+.quiet-piece:enabled:hover {
+  background: #3b5140;
+  border-color: #adc49c;
+}
+.quiet-piece:focus-visible {
+  outline: 3px solid #d3ecb7;
+  outline-offset: 2px;
+  position: relative;
+  z-index: 1;
+}
+.quiet-piece.nudged {
+  border-color: #e3d4a0;
+  box-shadow: inset 0 0 0 2px #e3d4a055;
+}
+.quiet-piece svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.stream-bed {
+  fill: none;
+  stroke: #13261b;
+  stroke-width: 24;
+}
+.stream-center {
+  fill: #13261b;
+}
+.stream-water {
+  fill: none;
+  stroke: #577663;
+  stroke-width: 10;
+  transition: stroke 0.5s;
+}
+.water-center {
+  fill: #577663;
+  transition: fill 0.5s;
+}
+.quiet-piece.wet {
+  background: #2b493b;
+  border-color: #6d9c83;
+}
+.quiet-piece.wet .stream-water {
+  stroke: #a5dbd4;
+}
+.quiet-piece.wet .water-center {
+  fill: #a5dbd4;
+}
+.quiet-piece.inlet,
+.quiet-piece.outlet {
+  border-color: #8ba98b;
+}
+.quiet-plant {
+  aspect-ratio: 1;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 7px;
+  color: #829d6a;
+  opacity: 0.6;
+  transition:
+    color 1s,
+    opacity 1s;
+}
+.quiet-plant:nth-child(3n) {
+  color: #b1bc80;
+  transform: rotate(-25deg);
+}
+.quiet-plant > span {
+  width: 10px;
+  height: 3px;
+  border-radius: 50%;
+  background: #0b1b1266;
+}
+.garden-restored .quiet-plant {
+  color: #c5dea4;
+  opacity: 1;
+}
+.pond-rings {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #6c9584;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 5px #203c31,
+    inset 0 0 0 6px #466c5a;
+  background: #385a49;
+  transition:
+    background-color 0.8s,
+    box-shadow 0.8s;
+}
+.pond-full .pond-rings {
+  background: #b4e3d6;
+  box-shadow:
+    inset 0 0 0 5px #4a8170,
+    inset 0 0 0 6px #97d0bf,
+    0 0 18px #97d0bf30;
+}
+.quiet-garden-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #b5c9a7;
+  font-size: 11px;
+  text-align: center;
+  padding-top: 22px;
+}
+@media (max-width: 1100px) {
+  .quiet-current {
+    grid-template-columns: 1fr;
+  }
+  .quiet-garden {
+    width: min(490px, 100%);
+    justify-self: center;
+  }
+}
+@media (max-width: 650px) {
+  .quiet-current {
+    padding: 20px 12px;
+    gap: 18px;
+  }
+  .quiet-copy {
+    padding: 0 8px;
+  }
+  .quiet-garden {
+    padding: 16px 7px;
+  }
+  .quiet-landscape {
+    grid-template-columns: 23px minmax(0, 1fr) 23px;
+    gap: 3px;
+  }
+  .pond-rings {
+    width: 23px;
+    height: 23px;
+  }
+  .quiet-board {
+    gap: 2px;
+  }
+  .quiet-piece {
+    border-radius: 5px;
+  }
+  .quiet-garden-caption {
+    font-size: 10px;
+    padding-top: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiet-current *,
+  .quiet-garden {
+    transition: none;
+  }
+}
+
 .auto-next {
   position: relative;
   display: inline-flex;
