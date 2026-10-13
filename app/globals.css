@@ -1600,6 +1600,39 @@ button {
 .trial-symbol.flanker {
   letter-spacing: 0.08em;
 }
+.study-direction,
+.fresh-glyph {
+  font-size: clamp(24px, 4vw, 38px);
+}
+.trial-lines {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #384733;
+  border-radius: 8px;
+  background: #101710;
+  color: #e1efd7;
+  font-size: 17px;
+  line-height: 1.6;
+  text-align: center;
+}
+.trial-lines p {
+  margin: 0;
+}
+.letter-grid {
+  width: auto;
+  max-width: 100%;
+  padding: 18px 12px;
+  gap: 8px;
+  color: #c3f76a;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(18px, 3vw, 24px);
+  white-space: pre;
+}
+.letter-grid p {
+  word-spacing: 0.5em;
+}
 .trial-prompt {
   color: #d8e6ce;
   font-size: 16px;

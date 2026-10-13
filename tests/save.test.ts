@@ -7,6 +7,7 @@ import {
   mergeSaves,
   validateSave,
 } from '../lib/save.ts';
+import { allGameIds } from '../lib/games.ts';
 
 test('exports and imports a validated save code', () => {
   const data = {
@@ -55,15 +56,8 @@ test('merges saves without overwriting note conflicts', () => {
   assert.ok(merged.notes.some((note) => note.title.includes('imported')));
 });
 
-test('all six new games survive save-code round trips', () => {
-  for (const game of [
-    'arithmetic',
-    'ordering',
-    'anagram',
-    'oddity',
-    'magnitude',
-    'binary',
-  ]) {
+test('every game survives save-code round trips', () => {
+  for (const game of allGameIds) {
     const data = {
       version: 1 as const,
       notes: [],

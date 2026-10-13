@@ -14,7 +14,13 @@ export type GameId =
   | 'anagram'
   | 'oddity'
   | 'magnitude'
-  | 'binary';
+  | 'binary'
+  | 'total'
+  | 'compass'
+  | 'count'
+  | 'analogy'
+  | 'deduction'
+  | 'code';
 export type Game = {
   id: GameId;
   name: string;
@@ -27,8 +33,82 @@ export type Game = {
   url?: string;
   visual?: boolean;
   timed?: boolean;
+  fresh?: boolean;
 };
 export const games: Game[] = [
+  {
+    id: 'total',
+    name: 'Running total',
+    category: 'Memory',
+    tag: 'MENTAL UPDATING',
+    description: 'Keep a total as the numbers change.',
+    instructions:
+      'Start at zero. Apply each addition or subtraction as it appears, then choose the final total from memory. Harder modes add more steps and larger changes.',
+    evidence:
+      'A recreational mental arithmetic and memory exercise. Feedback walks through every update so you can check your approach.',
+    fresh: true,
+  },
+  {
+    id: 'compass',
+    name: 'Compass recall',
+    category: 'Memory',
+    tag: 'DIRECTION TRACKING',
+    description: 'Remember the turns. Find your heading.',
+    instructions:
+      'Remember the starting direction, then imagine each turn in order. Left and right are quarter turns; turn around means a half turn. Choose your final heading after the instructions are hidden.',
+    evidence:
+      'A recreational direction and sequence puzzle. The turns are imaginary; you can stay seated and study each step at your own pace.',
+    fresh: true,
+  },
+  {
+    id: 'count',
+    name: 'Letter lookout',
+    category: 'Attention',
+    tag: 'SELECTIVE COUNTING',
+    description: 'Count the target among lookalikes.',
+    instructions:
+      'Count only the target letter in the grid. The target stays visible. Harder modes use bigger grids and similar-looking distractors. There is no timer.',
+    evidence:
+      'A recreational visual attention exercise. This letter grid is not a standardized attention assessment.',
+    visual: true,
+    fresh: true,
+  },
+  {
+    id: 'analogy',
+    name: 'Connection builder',
+    category: 'Learning',
+    tag: 'WORD RELATIONSHIPS',
+    description: 'Find the relationship. Complete the pair.',
+    instructions:
+      'Find how the first two words relate, then complete a second pair with the same relationship. Harder modes use less direct connections. Feedback explains each link.',
+    evidence:
+      'An educational word relationship puzzle using curated examples. It practices the vocabulary and relationships in these questions.',
+    fresh: true,
+  },
+  {
+    id: 'deduction',
+    name: 'Clue line',
+    category: 'Reasoning',
+    tag: 'LOGICAL DEDUCTION',
+    description: 'Put the clues together. Find the order.',
+    instructions:
+      'People stand in a line from left to right. Use every clue to choose who occupies the requested position. Clues stay visible; harder modes add more people and mix their wording.',
+    evidence:
+      'A recreational deduction puzzle. Each set of clues determines one complete ordering, explained after your answer.',
+    fresh: true,
+  },
+  {
+    id: 'code',
+    name: 'Code cracker',
+    category: 'Reasoning',
+    tag: 'RULE DISCOVERY',
+    description: 'Decode a rule from worked examples.',
+    instructions:
+      'Use the input-output examples to find a rule, then apply it to a new input. Gentle adds a fixed amount, Steady multiplies, and Challenge multiplies then adds. These are the only possible rule types.',
+    evidence:
+      'An educational arithmetic rule puzzle. The allowed rule family is specified because a few examples can otherwise fit many patterns.',
+    fresh: true,
+  },
   {
     id: 'nback',
     name: 'Signal stream',
@@ -256,6 +336,7 @@ export type Trial = {
   mirror?: boolean;
   reason: string;
   condition?: string;
+  lines?: string[];
 };
 const words = [
   ['harbor', 'velvet'],
@@ -305,6 +386,148 @@ const facts = [
     why: 'Hot matter outside the horizon can emit light. The glow does not escape from inside.',
   },
 ];
+// Each entry includes the relationship explicitly, avoiding ambiguous feedback.
+const analogies: readonly (readonly [
+  string,
+  string,
+  string,
+  readonly string[],
+  string,
+][])[] = [
+  [
+    [
+      'Bird : nest',
+      'Bee',
+      'hive',
+      ['web', 'den', 'pond'],
+      'A bird lives in a nest; a bee lives in a hive.',
+    ],
+    [
+      'Hand : glove',
+      'Foot',
+      'sock',
+      ['hat', 'belt', 'scarf'],
+      'A glove covers a hand; a sock covers a foot.',
+    ],
+    [
+      'Dog : puppy',
+      'Cat',
+      'kitten',
+      ['calf', 'foal', 'cub'],
+      'A puppy is a young dog; a kitten is a young cat.',
+    ],
+    [
+      'Hot : cold',
+      'Day',
+      'night',
+      ['sun', 'noon', 'light'],
+      'Hot and cold are opposites; day and night are opposites.',
+    ],
+    [
+      'Eye : see',
+      'Ear',
+      'hear',
+      ['taste', 'touch', 'smell'],
+      'Eyes are used to see; ears are used to hear.',
+    ],
+    [
+      'Fish : swim',
+      'Bird',
+      'fly',
+      ['dig', 'crawl', 'gallop'],
+      'Swimming is characteristic movement for fish; flying is characteristic movement for birds.',
+    ],
+  ],
+  [
+    [
+      'Painter : brush',
+      'Writer',
+      'pen',
+      ['canvas', 'ruler', 'hammer'],
+      'A painter uses a brush to create; a writer uses a pen.',
+    ],
+    [
+      'Page : book',
+      'Brick',
+      'wall',
+      ['roof', 'window', 'paint'],
+      'Pages make up a book; bricks make up a wall.',
+    ],
+    [
+      'Minute : hour',
+      'Month',
+      'year',
+      ['week', 'day', 'season'],
+      'An hour contains minutes; a year contains months.',
+    ],
+    [
+      'Seed : plant',
+      'Egg',
+      'chick',
+      ['nest', 'feather', 'shell'],
+      'A seed can develop into a plant; a fertilized chicken egg can develop into a chick.',
+    ],
+    [
+      'Thermometer : temperature',
+      'Scale',
+      'weight',
+      ['length', 'speed', 'time'],
+      'A thermometer measures temperature; a weighing scale measures weight.',
+    ],
+    [
+      'Library : books',
+      'Museum',
+      'exhibits',
+      ['tickets', 'roads', 'recipes'],
+      'A library houses books; a museum houses exhibits.',
+    ],
+  ],
+  [
+    [
+      'Drought : scarce water',
+      'Famine',
+      'scarce food',
+      ['heavy rain', 'strong wind', 'bright light'],
+      'Drought involves a shortage of water; famine involves a shortage of food.',
+    ],
+    [
+      'Compass : direction',
+      'Clock',
+      'time',
+      ['distance', 'pressure', 'volume'],
+      'A compass indicates direction; a clock indicates time.',
+    ],
+    [
+      'Editor : manuscript',
+      'Mechanic',
+      'vehicle',
+      ['recipe', 'garden', 'fabric'],
+      'An editor corrects a manuscript; a mechanic repairs a vehicle.',
+    ],
+    [
+      'Blueprint : building',
+      'Recipe',
+      'dish',
+      ['menu', 'plate', 'shop'],
+      'A blueprint guides construction of a building; a recipe guides preparation of a dish.',
+    ],
+    [
+      'Evaporation : liquid to gas',
+      'Melting',
+      'solid to liquid',
+      ['gas to liquid', 'liquid to solid', 'solid to gas'],
+      'Evaporation changes liquid to gas; melting changes solid to liquid.',
+    ],
+    [
+      'Encrypt : decrypt',
+      'Compress',
+      'decompress',
+      ['duplicate', 'delete', 'compile'],
+      'Decryption reverses encryption; decompression reverses compression.',
+    ],
+  ],
+] as const;
+
 export function createTrials(id: GameId, level: number): Trial[] {
   const difficulty = Number.isFinite(level)
     ? Math.min(3, Math.max(1, Math.trunc(level)))
@@ -314,6 +537,137 @@ export function createTrials(id: GameId, level: number): Trial[] {
     const delta = shuffle([-10, -5, -3, -2, -1, 1, 2, 3, 5, 10]).slice(0, 3);
     return shuffle([value, ...delta.map((d) => value + d)]).map(String);
   }
+  if (id === 'total')
+    return Array.from({ length: 5 }, () => {
+      const changes = Array.from(
+        { length: difficulty + 2 },
+        () =>
+          (randomInt(difficulty === 1 ? 5 : 12) + 1) * (randomInt(2) ? 1 : -1),
+      );
+      let total = 0;
+      const steps = changes.map((change) => {
+        total += change;
+        return `${change > 0 ? '+' : '−'}${Math.abs(change)} → ${total}`;
+      });
+      return {
+        prompt: 'Starting at zero, what is the final total?',
+        study: changes.map((n) => `${n > 0 ? '+' : '−'}${Math.abs(n)}`),
+        answer: String(total),
+        choices: choicesFor(total),
+        reason: `Start at 0. ${steps.join('; ')}. Final total: ${total}.`,
+      };
+    });
+  if (id === 'compass')
+    return Array.from({ length: 5 }, () => {
+      const headings = ['North', 'East', 'South', 'West'];
+      const start = randomInt(4);
+      const turns = Array.from(
+        { length: difficulty + 1 },
+        () => shuffle(difficulty === 3 ? [-1, 1, 2] : [-1, 1])[0],
+      );
+      const turnName = (n: number) =>
+        n === -1 ? 'Turn left' : n === 1 ? 'Turn right' : 'Turn around';
+      let heading = start;
+      const steps = turns.map((turn) => {
+        heading = (heading + turn + 4) % 4;
+        return `${turnName(turn)} → ${headings[heading]}`;
+      });
+      return {
+        prompt: 'Which direction are you facing now?',
+        study: [`Face ${headings[start]}`, ...turns.map(turnName)],
+        answer: headings[heading],
+        choices: headings,
+        reason: `Start facing ${headings[start]}. ${steps.join('; ')}.`,
+      };
+    });
+  if (id === 'count')
+    return Array.from({ length: count }, () => {
+      const side = difficulty + 2;
+      const family = shuffle(
+        difficulty === 1 ? ['A', 'B', 'C', 'D'] : ['M', 'N', 'W', 'H'],
+      );
+      const target = family[0];
+      const hits = randomInt(side * side - 1) + 1;
+      const cells = shuffle([
+        ...Array.from({ length: hits }, () => target),
+        ...Array.from(
+          { length: side * side - hits },
+          () => family[randomInt(3) + 1],
+        ),
+      ]);
+      const rows = Array.from({ length: side }, (_, row) =>
+        cells.slice(row * side, (row + 1) * side),
+      );
+      return {
+        prompt: `How many ${target} letters are in the grid?`,
+        lines: rows.map((row) => row.join(' ')),
+        answer: String(hits),
+        choices: shuffle([
+          hits,
+          ...shuffle(
+            Array.from({ length: side * side + 1 }, (_, i) => i).filter(
+              (n) => n !== hits,
+            ),
+          ).slice(0, 3),
+        ]).map(String),
+        reason: `Counts by row, top to bottom: ${rows.map((row) => row.filter((letter) => letter === target).length).join(' + ')} = ${hits}. Count one row at a time to keep your place.`,
+      };
+    });
+  if (id === 'analogy')
+    return shuffle(analogies[difficulty - 1]).map(
+      ([pair, cue, answer, distractors, reason]) => ({
+        prompt: 'Complete the second pair using the same relationship.',
+        lines: [pair, `${cue} : ?`],
+        answer,
+        choices: shuffle([answer, ...distractors]),
+        reason,
+      }),
+    );
+  if (id === 'deduction')
+    return Array.from({ length: count }, () => {
+      const order = shuffle([
+        'Ava',
+        'Ben',
+        'Cara',
+        'Drew',
+        'Eli',
+        'Finn',
+        'Gia',
+      ]).slice(0, difficulty + 2);
+      const position = randomInt(order.length);
+      const clues = order
+        .slice(0, -1)
+        .map((name, i) =>
+          difficulty > 1 && randomInt(2)
+            ? `${order[i + 1]} is to the right of ${name}.`
+            : `${name} is to the left of ${order[i + 1]}.`,
+        );
+      return {
+        prompt: `Who is in position ${position + 1}, counting from the left?`,
+        lines: shuffle(clues),
+        answer: order[position],
+        choices: shuffle(order),
+        reason: `The clues give this order from left to right: ${order.join(' → ')}. Position ${position + 1} is ${order[position]}.`,
+      };
+    });
+  if (id === 'code')
+    return Array.from({ length: count }, () => {
+      const multiplier = difficulty === 1 ? 1 : randomInt(4) + 2;
+      const offset = difficulty === 2 ? 0 : randomInt(9) + 1;
+      const input = randomInt(7) + 5;
+      const output = (n: number) => n * multiplier + offset;
+      const rule =
+        difficulty === 1
+          ? `add ${offset}`
+          : `multiply by ${multiplier}${offset ? `, then add ${offset}` : ''}`;
+      return {
+        prompt: `Rule type: ${difficulty === 1 ? 'add a fixed amount' : difficulty === 2 ? 'multiply by a fixed amount' : 'multiply, then add a fixed amount'}. What is the missing output?`,
+        lines: [`1 → ${output(1)}`, `3 → ${output(3)}`, `${input} → ?`],
+        answer: String(output(input)),
+        choices: choicesFor(output(input)),
+        reason: `The rule is: ${rule}. ${input} ${multiplier === 1 ? '' : `× ${multiplier} `}${offset ? `+ ${offset} ` : ''}= ${output(input)}.`,
+      };
+    });
   if (id === 'arithmetic')
     return Array.from({ length: count }, () => {
       const a = randomInt(difficulty === 1 ? 20 : 13) + 1,

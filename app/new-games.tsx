@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
@@ -46,6 +46,19 @@ export default function GameSession({
   const focusRef = useRef<HTMLDivElement>(null);
   const trial = trials[round];
   const waitMs = [3000, 2200, 1500][level - 1];
+  const respond = useCallback(
+    (value: string) => {
+      if (phase !== 'play' || answeredRef.current) return;
+      answeredRef.current = true;
+      setInput(value);
+      setAnswers((a) => [
+        ...a,
+        { correct: isCorrect(trial, value), condition: trial.condition },
+      ]);
+      setPhase('feedback');
+    },
+    [phase, trial],
+  );
   useEffect(() => {
     const update = () => setVisible(!document.hidden);
     document.addEventListener('visibilitychange', update);
@@ -58,7 +71,7 @@ export default function GameSession({
       waitMs,
     );
     return () => clearTimeout(timer);
-  }, [id, phase, round, active, visible, waitMs]);
+  }, [id, phase, round, active, visible, waitMs, respond]);
   function phaseFor(t: Trial) {
     return t.study ? 'study' : id === 'inhibit' ? 'prepare' : 'play';
   }
@@ -75,16 +88,6 @@ export default function GameSession({
     completedRef.current = false;
     setPhase(phaseFor(next[0]));
     focusRef.current?.focus();
-  }
-  function respond(value: string) {
-    if (phase !== 'play' || answeredRef.current) return;
-    answeredRef.current = true;
-    setInput(value);
-    setAnswers((a) => [
-      ...a,
-      { correct: isCorrect(trial, value), condition: trial.condition },
-    ]);
-    setPhase('feedback');
   }
   function next() {
     if (round === trials.length - 1) {
@@ -196,7 +199,10 @@ export default function GameSession({
       >
         {phase === 'intro' && (
           <div className="game-intro">
-            <div className="game-glyph" aria-hidden="true">
+            <div
+              className={`game-glyph ${game.fresh ? 'fresh-glyph' : ''}`}
+              aria-hidden="true"
+            >
               {
                 {
                   nback: 'A → B → A',
@@ -215,6 +221,12 @@ export default function GameSession({
                   oddity: 'One of these…',
                   magnitude: '½ vs 0.75',
                   binary: '0 1 0 1',
+                  total: '+4 −2 +7',
+                  compass: 'N → E → ?',
+                  count: 'M N M W',
+                  analogy: 'Find the link.',
+                  deduction: 'A → ? → C',
+                  code: '3 → 12',
                 }[id]
               }
             </div>
@@ -255,7 +267,10 @@ export default function GameSession({
                 ))}
               </div>
             ) : (
-              <div className="study-symbol" aria-live="polite">
+              <div
+                className={`study-symbol ${id === 'compass' ? 'study-direction' : ''}`}
+                aria-live="polite"
+              >
                 {trial.study![studyIndex]}
               </div>
             )}
@@ -300,6 +315,18 @@ export default function GameSession({
             <div className="trial-prompt" aria-live="polite">
               {trial.prompt}
             </div>
+            {trial.lines && (
+              <div
+                className={`trial-lines ${id === 'count' ? 'letter-grid' : ''}`}
+                aria-label={
+                  id === 'count' ? 'Letter grid, read row by row' : undefined
+                }
+              >
+                {trial.lines.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+            )}
             {trial.stimulus && (
               <div
                 className={`trial-symbol ${id === 'flanker' ? 'flanker' : ''}`}
@@ -518,6 +545,8 @@ function Shape({
   return (
     <svg
       viewBox="0 0 140 140"
+      // Inline SVG needs an image role to expose the whole shape as one graphic.
+      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role
       role="img"
       aria-label="Asymmetric block shape"
       className="rotation-shape"

@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
@@ -463,7 +462,7 @@ export default function Home() {
                 >
                   <span className="game-card-top">
                     <span>{g.category}</span>
-                    {games.some((x) => x.id === g.id) && (
+                    {games.some((x) => x.id === g.id && x.fresh) && (
                       <span className="new-badge">New</span>
                     )}
                   </span>
@@ -552,10 +551,10 @@ export default function Home() {
             <p>
               Notes and game history are stored in this browser. The app has no
               login, analytics, or live search. Source links leave the app and
-              need internet. After one online visit, this browser can cache the app for
-              offline play. Export codes contain your notes and results without
-              encryption. Clear browser storage to remove your local save.
-              Static hosting providers may retain normal access logs.
+              need internet. After one online visit, this browser can cache the
+              app for offline play. Export codes contain your notes and results
+              without encryption. Clear browser storage to remove your local
+              save. Static hosting providers may retain normal access logs.
             </p>
           </details>
         </footer>
